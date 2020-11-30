@@ -3,6 +3,8 @@ import json
 from datetime import datetime, timedelta, date
 import csv
 from sys import argv
+from os.path import exists
+from pathlib import Path
 
 
 url = "https://weather2020-weather-v1.p.rapidapi.com/zip/e8ecee8ff60c478f8a36280fea0524fe/02482"
@@ -19,11 +21,9 @@ today = date.today().strftime("%Y-%m-%d")
 
 class WeatherCachedFile:
     def __init__(self, filepath="out.txt"):
-        self.fp = open(filepath)
         self.path = filepath
-
-    def __del__(self):
-        self.fp.close()
+        if not exists(self.path):
+            Path(self.path).touch()
 
     def checkInputData(self):
         if len(argv) == 3:
